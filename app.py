@@ -14,11 +14,14 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 q = Queue(connection=conn)
 
 # Run Downloader
+
+
 @app.route('/run')
 def run():
     job = q.enqueue(tester.run)
     print(job.get_id())
     return 'OK'
+
 
 @app.route('/run2')
 def run_stack():
@@ -26,11 +29,20 @@ def run_stack():
     print(job.get_id())
     return 'OK'
 
+
 @app.route('/run3')
 def run_TA():
-    job = q.enqueue(Scraper().getTA)
+    job = q.enqueue(Scraper().getGithub)
     print(job.get_id())
     return 'OK'
+
+
+@app.route("/run4") #change to /save
+def close():
+    job = q.enqueue(Scraper().saveCookies)
+    print("close")
+    return "OK"
+
 
 if __name__ == '__main__':
     app.run(debug=True, use_reloader=True)
